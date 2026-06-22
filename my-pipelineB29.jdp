@@ -11,13 +11,11 @@ pipeline {
         }
 
         stage('BUILD STAGE') {
-            steps {
-                dir('cdec-b29-master/backend') {
-                    sh '''
-                        mvn clean package -DskipTests
-                    '''
+             steps {
+                dir('backend') {
+                   sh 'mvn clean package -DskipTests'
                 }
-            }
+             }
         }
 
         stage('TEST STAGE') {
