@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out code from GitHub...'
-                git branch: 'main', url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
+                git branch: 'master', url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
             }
         }
 
