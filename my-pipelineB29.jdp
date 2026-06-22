@@ -1,27 +1,53 @@
 pipeline {
     agent any
+
     stages {
-        stage ('PULL STAGE') {
+
+        stage('PULL STAGE') {
             steps {
-	        git 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
+                git 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
                 echo 'Pull Success'
             }
         }
-        stage ('BUILD STAGE') {
+
+        stage('BUILD STAGE') {
             steps {
-                sh 'mvn clean package DskipTests'
-                echo 'Build Success'
+                dir('cdec-b29-master/backend') {
+                    sh '''
+                        mvn clean package -DskipTests
+                    '''
+                }
             }
         }
-        stage ('TEST STAGE') {
+
+        stage('TEST STAGE') {
             steps {
-                echo 'Test Success'
+                dir('cdec-b29-master/backend') {
+                    sh '''
+                        mvn test
+                    '''
+                }
             }
         }
-        stage ('DEPLOY STAGE') {
+
+        stage('DEPLOY STAGE') {
             steps {
-                echo 'Deploy Success'
+                dir('cdec-b29-master/backend') {
+                    sh '''
+                        java -jar target/*.jar &
+                    '''
+                }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline Success'
+        }
+
+        failure {
+            echo 'Pipeline Failed'
         }
     }
 }
