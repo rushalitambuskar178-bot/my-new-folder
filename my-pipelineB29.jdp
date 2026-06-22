@@ -19,13 +19,12 @@ pipeline {
         }
 
         stage('TEST STAGE') {
-            steps {
-                dir('cdec-b29-master/backend') {
-                    sh '''
-                        mvn test
-                    '''
+             steps {
+                dir('backend') {
+                   sh 'mvn test'
                 }
-            }
+                echo 'Test Success'
+             }
         }
 
         stage('DEPLOY STAGE') {
