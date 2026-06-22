@@ -5,19 +5,40 @@ pipeline {
 
         stage('PULL STAGE') {
             steps {
-                git 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
-                echo 'Pull Success'
+                git branch: 'master',
+                    url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
             }
         }
 
         stage('BUILD STAGE') {
-             steps {
-                dir('backend') {
-                   sh 'mvn clean package -DskipTests'
-                }
-             }
+            steps {
+                sh 'mvn -f batch29/cdec-b29/backend/pom.xml clean package -DskipTests'
+            }
         }
 
+        stage('TEST STAGE') {
+            steps {
+                sh 'mvn -f batch29/cdec-b29/backend/pom.xml test'
+            }
+        }
+
+        stage('DEPLOY STAGE') {
+            steps {
+                echo 'Deploy Stage Running...'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline Success'
+        }
+
+        failure {
+            echo 'Pipeline Failed'
+        }
+    }
+}
         stage('TEST STAGE') {
              steps {
                 dir('backend') {
