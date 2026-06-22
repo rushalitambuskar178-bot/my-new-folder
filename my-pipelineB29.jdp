@@ -3,69 +3,48 @@ pipeline {
 
     stages {
 
-        stage('PULL STAGE') {
+        stage('Checkout') {
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
+                echo 'Checking out code from GitHub...'
+                git branch: 'main', url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
             }
         }
 
-        stage('BUILD STAGE') {
+        stage('Clean Workspace') {
             steps {
-                sh 'mvn -f batch29/cdec-b29/backend/pom.xml clean package -DskipTests'
+                echo 'Cleaning workspace...'
+                deleteDir()
             }
         }
 
-        stage('TEST STAGE') {
+        stage('Build') {
             steps {
-                sh 'mvn -f batch29/cdec-b29/backend/pom.xml test'
+                echo 'Building the project...'
             }
         }
 
-        stage('DEPLOY STAGE') {
+        stage('Test') {
             steps {
-                echo 'Deploy Stage Running...'
+                echo 'Running tests...'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+            }
+        }
+
     }
 
     post {
         success {
-            echo 'Pipeline Success'
+            echo 'Pipeline executed successfully 🎉'
         }
 
         failure {
-            echo 'Pipeline Failed'
+            echo 'Pipeline failed ❌ check logs'
         }
     }
 }
-        stage('TEST STAGE') {
-             steps {
-                dir('backend') {
-                   sh 'mvn test'
-                }
-                echo 'Test Success'
-             }
-        }
-
-        stage('DEPLOY STAGE') {
-            steps {
-                dir('cdec-b29-master/backend') {
-                    sh '''
-                        java -jar target/*.jar &
-                    '''
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline Success'
-        }
-
-        failure {
-            echo 'Pipeline Failed'
-        }
-    }
 }
