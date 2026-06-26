@@ -1,38 +1,94 @@
-pipeline{
+pipeline {
     agent any
+
+    tools {
+        maven 'Maven3'
+    }
+
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
 
-    stages{
-        stage('PULL SUCCESS'){
-            steps{
-                git 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
-                echo "pull done"
-            }
-        }
-        stage('BUILD STAGE') {
+    stages {
+
+        stage('Checkout') {
             steps {
+                echo "Cloning GitHub Repository..."
+
+                git branch: 'master',
+                    url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
+            }
+        }
+
+        stage('Verify Project') {
+            steps {
+                sh '''
+                pwd
+                ls -la
+                ls -la backend
+                '''
+            }
+        }
+
+        stage('Build') {
+            steps {
+
                 dir('backend') {
+
                     sh 'java -version'
+
                     sh 'mvn clean package -DskipTests'
+
                 }
-                echo 'BUILD SUCCESS'
+
+                echo "Build Successful"
             }
         }
-        stage('TEST SUCCESS'){
-            steps{
-              withsonarQubeEnv('sonar-cred') {
-                dir('backend') {
-                  sh '''mvn sonar:sonar \\
-                   -Dsonar.projectKey=my-project-b29 \\
-                   -Dsonar.projectName=\'my-project-b29\' \\
+
+        stage('SonarQube Analysis') {
+
+            steps {
+
+                withSonarQubeEnv('sonar-cred') {
+
+                    dir('backend') {
+
+                        sh '''
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=my-project-b29 \
+                        -Dsonar.projectName=my-project-b29
+                        '''
+
+                    }
+
                 }
-              }
-                echo 'TEST SUCCESS'
+
+            }
+
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deployment Successful"
             }
         }
+
+    }
+
+    post {
+
+        success {
+            echo "Pipeline Executed Successfully 🎉"
+        }
+
+        failure {
+            echo "Pipeline Failed ❌"
+        }
+
+    }
+
+}
         stage('DEPLOY SUCCESS'){
             steps{
                   echo "deploy done"
