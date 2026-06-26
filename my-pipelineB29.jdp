@@ -8,7 +8,7 @@ pipeline{
     stages{
         stage('PULL SUCCESS'){
             steps{
-                git 'https://github.com/chetanraval07/cdec-b29.git'
+                git 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
                 echo "pull done"
             }
         }
