@@ -27,7 +27,7 @@ pipeline{
                 dir('backend') {
                   sh '''mvn sonar:sonar \\
                    -Dsonar.projectKey=my-project-b29 \\
-                   -Dsonar.projectName=\'my-project\' \\
+                   -Dsonar.projectName=\'my-project-b29\' \\
                 }
               }
                 echo 'TEST SUCCESS'
