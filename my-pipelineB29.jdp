@@ -12,40 +12,29 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('PULL') {
             steps {
-                echo "Checking out source code..."
+                echo 'Pulling source code from GitHub...'
 
                 git branch: 'master',
                     url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
+
+                echo 'Code Pulled Successfully'
             }
         }
 
-        stage('Verify Project Structure') {
-            steps {
-                sh '''
-                echo "Current Directory:"
-                pwd
-
-                echo "Repository Contents:"
-                ls -la
-
-                echo "Backend Contents:"
-                ls -la backend
-                '''
-            }
-        }
-
-        stage('Build') {
+        stage('BUILD') {
             steps {
                 dir('backend') {
                     sh 'java -version'
                     sh 'mvn clean package -DskipTests'
                 }
+
+                echo 'Build Successful'
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('TEST') {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     dir('backend') {
@@ -56,28 +45,29 @@ pipeline {
                         '''
                     }
                 }
+
+                echo 'SonarQube Analysis Successful'
             }
         }
 
-        stage('Deploy') {
+        stage('DEPLOY') {
             steps {
-                echo "Deployment Completed Successfully"
+                echo 'Deployment Successful'
             }
         }
     }
 
     post {
-
         success {
-            echo "Pipeline Executed Successfully"
+            echo 'Pipeline Executed Successfully'
         }
 
         failure {
-            echo "Pipeline Failed"
+            echo 'Pipeline Failed'
         }
 
         always {
-            echo "Pipeline Finished"
+            echo 'Pipeline Finished'
         }
     }
 }
