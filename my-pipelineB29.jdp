@@ -1,71 +1,42 @@
-pipeline {
+pipeline{
     agent any
-
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
 
-    stages {
-
-        stage('Clean Workspace') {
-            steps {
-                echo 'Cleaning workspace...'
-                deleteDir()
+    stages{
+        stage('PULL SUCCESS'){
+            steps{
+                git 'https://github.com/chetanraval07/cdec-b29.git'
+                echo "pull done"
             }
         }
-
-        stage('Checkout') {
-            steps {
-                echo 'Checking out code from GitHub...'
-                git branch: 'master', url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
-            }
-        }
-
-        stage('Verify Structure') {
-            steps {
-                sh 'ls -R'
-            }
-        }
-
-        stage('Build') {
+        stage('BUILD STAGE') {
             steps {
                 dir('backend') {
-                    echo 'Building backend...'
                     sh 'java -version'
                     sh 'mvn clean package -DskipTests'
                 }
+                echo 'BUILD SUCCESS'
             }
         }
-
-        stage('Test') {
-            steps {
+        stage('TEST SUCCESS'){
+            steps{
                 dir('backend') {
-                sh '''mvn sonar:sonar \\
-                   -Dsonar.projectKey=my-project-b29 \\
-                   -Dsonar.projectName=\'my-project-b29\' \\
-                   -Dsonar.host.url=http://13.61.91.228:9000 \\
-                   -Dsonar.token=sqp_35b7ac962aedc83918807613547407bccbfd5d0c'''
+                  sh '''mvn sonar:sonar \\
+                   -Dsonar.projectKey=my-project \\
+                   -Dsonar.projectName=\'my-project\' \\
+                   -Dsonar.host.url=http://13.51.11.190:9000 \\
+                   -Dsonar.token=sqp_da4e4c0f8c47c08f706df9a64b69840db402debe'''
                 }
-                echo 'Running tests...'
+                echo 'TEST SUCCESS'
             }
         }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
+        stage('DEPLOY SUCCESS'){
+            steps{
+                  echo "deploy done"
             }
         }
     }
-
-    post {
-        success {
-            echo 'Pipeline executed successfully 🎉'
-        }
-        failure {
-            echo 'Pipeline failed ❌ check logs'
-        }
-    }
-}
-}
 }
