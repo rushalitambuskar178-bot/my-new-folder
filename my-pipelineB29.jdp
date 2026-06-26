@@ -46,8 +46,8 @@ pipeline {
                    -Dsonar.projectName=\'my-project-b29\' \\
                    -Dsonar.host.url=http://13.61.91.228:9000 \\
                    -Dsonar.token=sqp_35b7ac962aedc83918807613547407bccbfd5d0c'''
-                echo 'Running tests...'
                 }
+                echo 'Running tests...'
             }
         }
 
