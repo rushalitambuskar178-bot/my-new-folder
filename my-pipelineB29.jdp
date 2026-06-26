@@ -47,7 +47,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar-cred') {
+                withSonarQubeEnv('SonarQube') {
                     dir('backend') {
                         sh '''
                         mvn sonar:sonar \
