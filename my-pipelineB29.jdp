@@ -49,6 +49,13 @@ pipeline {
                 echo 'SonarQube Analysis Successful'
             }
         }
+        stage('QUALITY GATE') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
         stage('DELIVERY STAGE') {
             steps {
