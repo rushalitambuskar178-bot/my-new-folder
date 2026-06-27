@@ -19,7 +19,7 @@ pipeline {
                 git branch: 'master',
                     url: 'https://github.com/rushalitambuskar178-bot/my-new-folder.git'
 
-                echo 'Code Pulled Successfully'
+                echo 'Code Pulled Success 1'
             }
         }
 
