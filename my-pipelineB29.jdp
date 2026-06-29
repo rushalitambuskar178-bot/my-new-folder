@@ -59,22 +59,9 @@ pipeline {
 
         stage('DELIVERY STAGE') {
             steps {
-                echo 'Deployment Successful'
+                sh 'aws s3 cp /var/lib/jenkins/workspace/batch29-pipeline/backend/target/student-registration-backend-0.0.1-SNAPSHOT.jar s3://my-jenkins-buxx/my-project-artifact'
+                echo 'Delivery Successful'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline Executed Successfully'
-        }
-
-        failure {
-            echo 'Pipeline Failed'
-        }
-
-        always {
-            echo 'Pipeline Finished'
         }
     }
 }
